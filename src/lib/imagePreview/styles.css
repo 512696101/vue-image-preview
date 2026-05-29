@@ -1,0 +1,325 @@
+.image-preview-root {
+  --ip-bg: rgba(0, 0, 0, 0.75);
+  --ip-footer-bg: rgba(0, 0, 0, 0.55);
+  --ip-toolbar-bg: transparent;
+  --ip-btn-color: #fff;
+  --ip-btn-hover: rgba(255, 255, 255, 0.16);
+  --ip-btn-disabled: rgba(255, 255, 255, 0.35);
+  --ip-thumb-size: 56px;
+  --ip-thumb-gap: 8px;
+  --ip-thumb-radius: 6px;
+  --ip-thumb-border: transparent;
+  --ip-thumb-border-active: #fff;
+  --ip-btn-size: 42px;
+  --ip-btn-font-size: 18px;
+  --ip-corner-btn-size: 48px;
+  --ip-corner-font-size: 32px;
+  --ip-footer-gap: 10px;
+  --ip-footer-padding-x: 12px;
+  --ip-footer-padding-y: 10px;
+  --ip-safe-top: env(safe-area-inset-top, 0px);
+  --ip-safe-right: env(safe-area-inset-right, 0px);
+  --ip-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ip-safe-left: env(safe-area-inset-left, 0px);
+  --ip-z-index: 9999;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: contain;
+}
+
+.image-preview-root *,
+.image-preview-root *::before,
+.image-preview-root *::after {
+  box-sizing: border-box;
+}
+
+/* ── 全屏（挂载 body，尺寸由 JS 按 visualViewport 写入） ── */
+.image-preview-root--fullscreen,
+.image-preview-root:fullscreen {
+  position: fixed;
+  z-index: var(--ip-z-index);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--ip-bg);
+  max-width: 100vw;
+  max-height: 100dvh;
+}
+
+.image-preview-root:fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.image-preview-root--fullscreen .image-preview-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-preview-root--fullscreen .image-preview-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.image-preview-root--fullscreen .image-preview-footer {
+  position: relative;
+  flex: 0 0 auto;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0;
+  padding: var(--ip-footer-padding-y) var(--ip-footer-padding-x)
+    calc(var(--ip-footer-padding-y) + var(--ip-safe-bottom));
+}
+
+.image-preview-root--fullscreen .image-preview-corner {
+  top: calc(8px + var(--ip-safe-top));
+  right: calc(8px + var(--ip-safe-right));
+}
+
+/* ── 容器模式（填满挂载节点） ── */
+.image-preview-root--container {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--ip-bg);
+  border-radius: inherit;
+}
+
+.image-preview-root--container .image-preview-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-preview-root--container .image-preview-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.image-preview-root--container .image-preview-footer {
+  position: relative;
+  flex: 0 0 auto;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0;
+  padding: var(--ip-footer-padding-y) var(--ip-footer-padding-x);
+}
+
+.image-preview-root--container .image-preview-corner {
+  top: 8px;
+  right: 8px;
+}
+
+/* ── 预览区 ── */
+.image-preview-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.image-preview-stage--pannable {
+  cursor: grab;
+}
+
+.image-preview-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.image-preview-image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.15s ease;
+  will-change: transform;
+}
+
+.image-preview-image.is-dragging {
+  transition: none;
+}
+
+/* ── 底部操作区 ── */
+.image-preview-footer {
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ip-footer-gap);
+  background: var(--ip-footer-bg);
+  backdrop-filter: blur(8px);
+}
+
+.image-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: var(--ip-toolbar-bg);
+}
+
+.image-preview-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: var(--ip-btn-size);
+  height: var(--ip-btn-size);
+  padding: 0 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ip-btn-color);
+  font-size: var(--ip-btn-font-size);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.image-preview-btn svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.image-preview-btn:hover:not(:disabled) {
+  background: var(--ip-btn-hover);
+}
+
+.image-preview-btn:disabled {
+  color: var(--ip-btn-disabled);
+  cursor: not-allowed;
+}
+
+.image-preview-counter {
+  flex: 0 0 auto;
+  min-width: 44px;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* ── 右上角 ── */
+.image-preview-corner {
+  position: absolute;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.image-preview-btn--corner {
+  min-width: var(--ip-corner-btn-size);
+  width: var(--ip-corner-btn-size);
+  height: var(--ip-corner-btn-size);
+  padding: 0;
+  border-radius: 50%;
+  font-size: var(--ip-corner-font-size);
+  font-weight: 300;
+  line-height: 1;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.image-preview-btn--corner:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+/* ── 缩略图条 ── */
+.image-preview-thumbnails {
+  width: 100%;
+  max-width: 100%;
+  padding: 2px 0 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+
+.image-preview-thumbnails-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ip-thumb-gap);
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.image-preview-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.image-preview-thumbnails::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+}
+
+.image-preview-thumb {
+  flex: 0 0 auto;
+  width: var(--ip-thumb-size);
+  height: var(--ip-thumb-size);
+  padding: 0;
+  border: 2px solid var(--ip-thumb-border);
+  border-radius: var(--ip-thumb-radius);
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0.72;
+  transition: border-color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+}
+
+.image-preview-thumb:hover {
+  opacity: 0.95;
+}
+
+.image-preview-thumb--active {
+  border-color: var(--ip-thumb-border-active);
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.image-preview-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.image-preview-loading {
+  position: absolute;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.8;
+}
