@@ -1,18 +1,40 @@
 {
   "name": "vue-image-preview",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A powerful and highly customizable image preview component",
   "type": "module",
+  "main": "./dist/image-preview.umd.js",
+  "module": "./dist/image-preview.js",
+  "exports": {
+    ".": {
+      "import": "./dist/image-preview.js",
+      "require": "./dist/image-preview.umd.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
+  "keywords": [
+    "image",
+    "preview",
+    "viewer",
+    "gallery",
+    "vue3",
+    "component"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
     "vue": "^3.5.34"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.6",
-    "vite": "^8.0.12"
+    "@vitejs/plugin-vue": "^4.6.2",
+    "vite": "^4.5.14"
   }
 }
