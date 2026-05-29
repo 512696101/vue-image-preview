@@ -169,7 +169,7 @@ registerAction({
       ? handlerSvgIcon(icon.exitNativeFullscreen)
       : handlerSvgIcon(icon.nativeFullscreen),
   order: 5,
-  visible: (ctx) => ctx.mode === 'fullscreen' && ctx.supportsNativeFullscreen,
+  // visible: (ctx) => ctx.mode === 'fullscreen' && ctx.supportsNativeFullscreen,
   handler: (ctx) => ctx.toggleNativeFullscreen(),
 })
 registerAction({
