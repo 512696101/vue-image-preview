@@ -76,7 +76,7 @@ export function computeInitialImageScale(
 
   const metrics = resolveMetrics(mode, mountTarget)
   // 手机约 60%，PC 约 80%，中间视口线性过渡
-  const fillRatio = clamp(lerp(metrics.width, 480, 1280, 0.6, 1), 0.6, 1)
+  const fillRatio = clamp(lerp(metrics.width, 480, 1280, 0.6, 0.9), 0.6, 0.9)
 
   const naturalW = imageEl.naturalWidth
   const naturalH = imageEl.naturalHeight
@@ -92,7 +92,6 @@ export function computeInitialImageScale(
   const targetW = stageW * fillRatio
   const targetH = stageH * fillRatio
   const initialScale = Math.min(targetW / renderedW, targetH / renderedH)
-  console.log(initialScale)
   const viewportMin = Math.min(metrics.width, metrics.height)
   const maxScale = viewportMin <= 480 ? 3 : viewportMin <= 768 ? 3.5 : 4
   return Number(clamp(initialScale, 0.45, maxScale).toFixed(4))

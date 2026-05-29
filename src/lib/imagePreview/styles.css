@@ -10,7 +10,7 @@
   --ip-thumb-radius: 6px;
   --ip-thumb-border: transparent;
   --ip-thumb-border-active: #fff;
-  --ip-btn-size: 42px;
+  --ip-btn-size: 32px;
   --ip-btn-font-size: 18px;
   --ip-corner-btn-size: 48px;
   --ip-corner-font-size: 32px;
@@ -198,7 +198,7 @@
   border-radius: 8px;
   background: transparent;
   color: var(--ip-btn-color);
-  font-size: var(--ip-btn-font-size);
+  font-size: 24px;
   line-height: 1;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -296,7 +296,10 @@
   cursor: pointer;
   background: rgba(255, 255, 255, 0.08);
   opacity: 0.72;
-  transition: border-color 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 .image-preview-thumb:hover {

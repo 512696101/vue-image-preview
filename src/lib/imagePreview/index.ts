@@ -98,7 +98,7 @@ function setButtonIcon(button: HTMLButtonElement, icon: PreviewActionIcon, ctx: 
   button.replaceChildren()
 
   const content = typeof icon === 'function' ? icon(ctx) : icon
-  if (content instanceof HTMLElement) {
+  if (content instanceof Element) {
     button.appendChild(content)
     return
   }
@@ -779,6 +779,7 @@ export class ImagePreview {
   }
 
   private _createActionButton(action: PreviewAction, ctx: PreviewContext): HTMLButtonElement {
+    console.log(action,'action')
     const placement = action.placement ?? 'toolbar'
     const button = document.createElement('button')
     button.type = 'button'
@@ -797,6 +798,7 @@ export class ImagePreview {
     button.dataset.actionKey = action.key
 
     const icon = resolveActionIcon(action, this.theme, ctx)
+    console.log(icon,'icon')
     setButtonIcon(button, icon, ctx)
     action.render?.(ctx, button)
 

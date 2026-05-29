@@ -30,8 +30,8 @@ export interface PreviewContext {
 /** 图标：文字 / HTML 节点 / 动态渲染函数 */
 export type PreviewActionIcon =
   | string
-  | HTMLElement
-  | ((ctx: PreviewContext) => string | HTMLElement)
+  | Element
+  | ((ctx: PreviewContext) => string | Element)
 
 export interface PreviewAction {
   key: string
